@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <properties resource="jdbc.properties" />
+
+    <!--配置驼峰命名自动映射
+    要求：Java类属性名必须遵循驼峰命名法，SQL查询结果列名必须遵循全小写下划线分割单词-->
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <!--起别名-->
+    <typeAliases>
+        <!--
+            type: 指定给哪个类型起别名
+            alias：指定别名
+            注意：别名不缺分大小写。
+            alias属性是可以省略的。有默认的别名。
+        -->
+        <!--自己指定别名
+        <typeAlias type="com.high.mybatis.pojo.Car" alias="aaa"/>
+        <typeAlias type="com.high.mybatis.pojo.Log" alias="bbb"/>
+        -->
+
+        <!--
+        省略alias之后，别名就是类的简名，比如：com.high.mybatis.pojo.Car的别名
+        就是Car/car/cAR/cAr，不缺分大小写。
+        -->
+        <!--<typeAlias type="com.high.mybatis.pojo.Car"/>
+        <typeAlias type="com.high.mybatis.pojo.Log"/>-->
+
+        <!--将这个包下的所有的类全部自动起别名，别名就是类简名，不区分大小写。-->
+        <package name="com.high.mybatis.pojo"/>
+    </typeAliases>
+
+    <environments default="dev">
+        <environment id="dev">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <!--寻找mapper的三种方式
+        <mapper resource=""/>
+        <mapper url=""/>
+        <mapper class=""/>-->
+
+        <!--<mapper resource="CarMapper.xml"/>
+        <mapper resource="LogMapper.xml"/>-->
+
+        <!--使用这种方式的前提：CarMapper.xml文件的位置不能随便放-->
+        <!--必须和CarMapper接口放在一起。-->
+        <!--XML文件的名字必须和接口名一致。-->
+        <!--<mapper class="com.high.mybatis.mapper.CarMapper"/>
+        <mapper class="com.high.mybatis.mapper.LogMapper"/>-->
+
+        <!-- 这种方式在实际开发中是使用的。-->
+        <!--前提是：XML文件必须和接口放在一起。并且名字一致。-->
+        <package name="com.high.mybatis.mapper"/>
+    </mappers>
+
+</configuration>

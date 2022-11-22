@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <!--开启mybatis对标准日志的实现。-->
+    <!--<settings>-->
+        <!--<setting name="logImpl" value="STDOUT_LOGGING"/>-->
+        <!--<setting name="logImpl" value="SLF4J"/>-->
+    <!--</settings>-->
+
+    <typeAliases>
+        <package name="com.high.mybatis.pojo"/>
+    </typeAliases>
+
+    <!--default配置默认环境-->
+    <environments default="development">
+        <!--一个SqlSessionFactory对应一个environment，一个environment对应一个数据库/数据源-->
+        <environment id="development">
+            <!--transactionManager的type配置使用的事务管理器，底层会创建不同事务管理器对象
+            mybatis的事务管理器只有两种jdbc和managed-->
+            <!--<transactionManager type="MANAGED"/>-->
+            <transactionManager type="JDBC"/>
+            <!--数据源的type用来指定数据源类型，指定具体用什么方式获取数据库连接对象
+            type的值只能有三种类型：type="[UNPOOLED|POOLED|JNDI]"
+            UNPOOLED：不使用数据库连接池技术，每次请求创建新的Connection对象
+            POOLED：使用mybatis自己实现的数据库连接池
+            JNDI：集成其他第三方的数据库连接池，如druid
+
+            JNDI是一种规范，JNDI是Java命名目录接口，大部分web容器都实现了JNDI规范
+                如：Tomcat、Jetty、WebLogic、WebSphere等
+            -->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/bjpowernode"/>
+                <property name="username" value="root"/>
+                <property name="password" value="123456"/>
+                <!--poolMaximumActiveConnections：最大活动连接对象，默认是10-->
+                <property name="poolMaximumActiveConnections" value="3"/>
+                <!--poolTimeToWait：打印日志获取连接对象间隔时间，默认20秒-->
+                <property name="poolTimeToWait" value="2000"/>
+                <!--poolMaximumCheckoutTime：暂未使用未关闭连接强制空闲关闭，超时时间，默认20秒-->
+                <property name="poolMaximumCheckoutTime " value="10000"/>
+                <!--poolMaximumIdleConnections：最大空闲连接数，空闲连接过多时会关闭连接对象，默认是5-->
+                <property name="poolMaximumIdleConnections" value="2"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <!--执行XxxMapper.xml文件的路径-->
+        <!--resource属性自动会从类的根路径下开始查找资源。-->
+        <mapper resource="CarMapper.xml"/>
+        <!--resource属性：从类路径当中加载资源。-->
+        <!--<mapper resource="com/CarMapper2.xml"/>-->
+
+        <!--url属性：从绝对路径当中加载资源。-->
+        <!--语法格式：file:///绝对路径-->
+        <!--不建议：因为移植性差。-->
+        <!--<mapper url="file:///d:/CarMapper.xml"/>-->
+    </mappers>
+</configuration>

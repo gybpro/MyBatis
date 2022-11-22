@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.high.mybatis.mapper.StuMapper">
+
+    <!--实体类属性与表中列的映射(属性名与列名一致可省略)-->
+    <!--如果需要立即加载则将获取类型改为eager fetchType="eager"-->
+    <resultMap id="StuResultMap" type="Stu">
+        <id property="id" column="id"/>
+        <association property="clazz" column="c_id"
+                     select="com.high.mybatis.mapper.ClazzMapper.selectById"/>
+    </resultMap>
+    <!--定义全部列名的映射-->
+    <sql id="StuColumns">
+        id, name, c_id
+    </sql>
+    <!--书写SQL语句-->
+    <select id="selectById" resultMap="StuResultMap">
+        select
+        <include refid="StuColumns"/>
+        from t_stu
+        where id = #{id}
+    </select>
+
+    <select id="selectByCId" resultType="stu">
+        select <include refid="StuColumns"/>
+        from t_stu
+        where c_id = #{cId}
+    </select>
+
+    <insert id="insertStuByList" parameterType="stu">
+        insert into t_stu
+        values <foreach collection="stuList" item="stu" separator=",">
+            (null, #{stu.name}, #{stu.clazz.id})
+        </foreach>
+    </insert>
+
+</mapper>

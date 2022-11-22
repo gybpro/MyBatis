@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.high.bank.dao.AccountMapper">
+    <resultMap id="BaseResultMap" type="account">
+        <id property="id" column="id"/>
+        <result property="actNo" column="act_no"/>
+        <result property="balance" column="balance"/>
+    </resultMap>
+
+    <select id="selectActByActNo" parameterType="string" resultMap="BaseResultMap">
+        select id, act_no, balance
+        from t_act
+        where act_no = #{actNo}
+    </select>
+
+    <update id="updateActByActNo" parameterType="account">
+        update t_act
+        set balance = #{balance}
+        where act_no = #{actNo}
+    </update>
+</mapper>

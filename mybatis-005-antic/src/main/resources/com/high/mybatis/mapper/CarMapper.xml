@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.high.mybatis.mapper.CarMapper">
+    <resultMap id="BaseResultMap" type="car">
+        <!--官方建议配置id，这样会提高mybatis运行效率-->
+        <id property="id" column="id"/>
+        <!--可以自己指定javaType和jdbcType提高运行效率，但一般不手动加，提高开发效率-->
+        <result property="carNum" column="car_num" javaType="string" jdbcType="VARCHAR"/>
+        <!--属性名与列名一致可以省略不写，id除外，标识提高效率-->
+        <!--<result property="brand" column="brand"/>-->
+        <result property="guidePrice" column="guide_price"/>
+        <result property="produceTime" column="produce_time"/>
+        <result property="carType" column="car_type"/>
+    </resultMap>
+
+    <sql id="BaseColumns">
+        id
+        , car_num, brand, guide_price, produce_time, car_type
+    </sql>
+
+    <!--
+        useGeneratedKeys="true" 使用自动生成的主键值。
+        keyProperty="id" 指定主键值赋值给对象的哪个属性。这个就表示将主键值赋值给Car对象的id属性。
+    -->
+    <insert id="insertCarUseGeneratedKeys" useGeneratedKeys="true" keyProperty="id">
+        insert into t_car
+        values (null, #{carNum}, #{brand}, #{guidePrice}, #{produceTime}, #{carType})
+    </insert>
+
+    <select id="selectByBrandLike" resultType="CAR">
+        select
+        id,
+        car_num as carNum,
+        brand,
+        guide_price as guidePrice,
+        produce_time as produceTime,
+        car_type as carType
+        from
+        t_car
+        where
+        <!--brand like '%#{brand}%'-->
+        <!--brand like '%${brand}%'-->
+        <!--brand like concat('%',#{brand},'%')-->
+        <!--brand like concat('%','${brand}','%')-->
+        brand like "%"#{brand}"%"
+    </select>
+
+    <delete id="deleteBatch">
+        <!--delete from t_car where id in(#{ids})-->
+        delete from t_car where id in(${ids})
+    </delete>
+
+    <select id="selectAllByAscOrDesc" resultType="car">
+        select id,
+               car_num      as carNum,
+               brand,
+               guide_price  as guidePrice,
+               produce_time as produceTime,
+               car_type     as carType
+        from t_car
+        order by produce_time ${ascOrDesc}
+    </select>
+
+    <select id="selectByCarType" resultType="cAr">
+        select
+        id,
+        car_num as carNum,
+        brand,
+        guide_price as guidePrice,
+        produce_time as produceTime,
+        car_type as carType
+        from
+        t_car
+        where
+        <!--car_type = #{carType}-->
+        car_type = '${carType}'
+    </select>
+
+    <select id="selectByBrandAndType" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumns"/>
+        from t_car
+        where brand like '%' #{brand} '%'
+        and car_type like '%' #{carType} '%'
+    </select>
+
+    <select id="selectAllRetMap" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumns"/>
+        from t_car
+    </select>
+
+    <select id="selectAllMapUnderscoreToCamelCase" resultType="car">
+        select
+        <include refid="BaseColumns"/>
+        from t_car
+    </select>
+
+    <select id="selectTotal" resultType="long">
+        select count(*) from t_car
+    </select>
+</mapper>

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.high.mybatis.mapper.CarMapper">
+    <resultMap id="BaseResultMap" type="com.high.mybatis.pojo.Car">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="car_num" jdbcType="VARCHAR" property="carNum"/>
+        <result column="brand" jdbcType="VARCHAR" property="brand"/>
+        <result column="guide_price" jdbcType="DECIMAL" property="guidePrice"/>
+        <result column="produce_time" jdbcType="CHAR" property="produceTime"/>
+        <result column="car_type" jdbcType="VARCHAR" property="carType"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id
+        , car_num, brand, guide_price, produce_time, car_type
+    </sql>
+    <select id="selectByExample" parameterType="com.high.mybatis.pojo.CarExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from t_car
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_car
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from t_car
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.high.mybatis.pojo.CarExample">
+        delete from t_car
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.high.mybatis.pojo.Car">
+        insert into t_car (id, car_num, brand,
+                           guide_price, produce_time, car_type)
+        values (#{id,jdbcType=BIGINT}, #{carNum,jdbcType=VARCHAR}, #{brand,jdbcType=VARCHAR},
+                #{guidePrice,jdbcType=DECIMAL}, #{produceTime,jdbcType=CHAR}, #{carType,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.high.mybatis.pojo.Car">
+        insert into t_car
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="carNum != null">
+                car_num,
+            </if>
+            <if test="brand != null">
+                brand,
+            </if>
+            <if test="guidePrice != null">
+                guide_price,
+            </if>
+            <if test="produceTime != null">
+                produce_time,
+            </if>
+            <if test="carType != null">
+                car_type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="carNum != null">
+                #{carNum,jdbcType=VARCHAR},
+            </if>
+            <if test="brand != null">
+                #{brand,jdbcType=VARCHAR},
+            </if>
+            <if test="guidePrice != null">
+                #{guidePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="produceTime != null">
+                #{produceTime,jdbcType=CHAR},
+            </if>
+            <if test="carType != null">
+                #{carType,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.high.mybatis.pojo.CarExample" resultType="java.lang.Long">
+        select count(*) from t_car
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update t_car
+        <set>
+            <if test="row.id != null">
+                id = #{row.id,jdbcType=BIGINT},
+            </if>
+            <if test="row.carNum != null">
+                car_num = #{row.carNum,jdbcType=VARCHAR},
+            </if>
+            <if test="row.brand != null">
+                brand = #{row.brand,jdbcType=VARCHAR},
+            </if>
+            <if test="row.guidePrice != null">
+                guide_price = #{row.guidePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="row.produceTime != null">
+                produce_time = #{row.produceTime,jdbcType=CHAR},
+            </if>
+            <if test="row.carType != null">
+                car_type = #{row.carType,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="example != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update t_car
+        set id = #{row.id,jdbcType=BIGINT},
+        car_num = #{row.carNum,jdbcType=VARCHAR},
+        brand = #{row.brand,jdbcType=VARCHAR},
+        guide_price = #{row.guidePrice,jdbcType=DECIMAL},
+        produce_time = #{row.produceTime,jdbcType=CHAR},
+        car_type = #{row.carType,jdbcType=VARCHAR}
+        <if test="example != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.high.mybatis.pojo.Car">
+        update t_car
+        <set>
+            <if test="carNum != null">
+                car_num = #{carNum,jdbcType=VARCHAR},
+            </if>
+            <if test="brand != null">
+                brand = #{brand,jdbcType=VARCHAR},
+            </if>
+            <if test="guidePrice != null">
+                guide_price = #{guidePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="produceTime != null">
+                produce_time = #{produceTime,jdbcType=CHAR},
+            </if>
+            <if test="carType != null">
+                car_type = #{carType,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.high.mybatis.pojo.Car">
+        update t_car
+        set car_num      = #{carNum,jdbcType=VARCHAR},
+            brand        = #{brand,jdbcType=VARCHAR},
+            guide_price  = #{guidePrice,jdbcType=DECIMAL},
+            produce_time = #{produceTime,jdbcType=CHAR},
+            car_type     = #{carType,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

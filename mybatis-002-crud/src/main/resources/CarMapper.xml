@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--<mapper namespace="com.high.mybatis.car.pojo.Car">-->
+<!--这个名字可以随便起，但调用的时候需要用这个名字，所以如果spring管理则必须是pojo的全限定名-->
+<mapper namespace="abc">
+    <resultMap id="BaseResultMap" type="car">
+        <id property="id" column="id"/>
+        <result property="carNum" column="car_num"/>
+        <result property="brand" column="brand"/>
+        <result property="guidePrice" column="guide_price"/>
+        <result property="produceTime" column="produce_time"/>
+        <result property="carType" column="car_type"/>
+    </resultMap>
+
+    <!--insert语句，id是这条SQL语句的唯一标识。这个id就代表了这条SQL语句。-->
+    <insert id="insertCar">
+        insert into t_car(id, car_num, brand, guide_price, produce_time, car_type)
+        values (null, #{carNum}, #{brand}, #{guidePrice}, #{produceTime}, #{carType})
+    </insert>
+
+    <delete id="deleteCarById">
+        delete
+        from t_car
+        where id = #{id}
+    </delete>
+
+    <update id="updateCar" parameterType="car">
+        update t_car
+        set car_num      = #{carNum},
+            brand        = #{brand},
+            guide_price  = #{guidePrice},
+            produce_time = #{produceTime},
+            car_type     = #{carType}
+        where id = #{id}
+    </update>
+
+    <select id="selectCarById" resultMap="BaseResultMap">
+        select id, car_num, brand, guide_price, produce_time, car_type
+        from t_car
+        where id = #{id}
+    </select>
+
+    <select id="selectAllCar" resultMap="BaseResultMap">
+        select id, car_num, brand, guide_price, produce_time, car_type
+        from t_car
+    </select>
+</mapper>

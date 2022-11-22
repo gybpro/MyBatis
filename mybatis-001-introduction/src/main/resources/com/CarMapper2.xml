@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fdsafdsa">
+
+    <!--insert语句，id是这条SQL语句的唯一标识。这个id就代表了这条SQL语句。-->
+    <insert id="insertCar">
+        insert into t_car(id,car_num,brand,guide_price,produce_time,car_type)
+        values(null,'1003','丰田霸道',30.0,'2000-10-11','燃油车');
+    </insert>
+
+</mapper>

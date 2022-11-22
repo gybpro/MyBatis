@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <!--开启mybatis对标准日志的实现。-->
+    <!--<settings>-->
+        <!--<setting name="logImpl" value="STDOUT_LOGGING"/>-->
+        <!--<setting name="logImpl" value="SLF4J"/>-->
+    <!--</settings>-->
+
+    <typeAliases>
+        <package name="com.high.mybatis.car.pojo"/>
+    </typeAliases>
+
+    <!--default配置默认环境-->
+    <environments default="development">
+        <!--一个SqlSessionFactory对应一个environment，一个environment对应一个数据库/数据源-->
+        <environment id="development">
+            <!--<transactionManager type="MANAGED"/>-->
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/bjpowernode"/>
+                <property name="username" value="root"/>
+                <property name="password" value="123456"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <!--执行XxxMapper.xml文件的路径-->
+        <!--resource属性自动会从类的根路径下开始查找资源。-->
+        <mapper resource="CarMapper.xml"/>
+        <!--resource属性：从类路径当中加载资源。-->
+        <!--<mapper resource="com/CarMapper2.xml"/>-->
+
+        <!--url属性：从绝对路径当中加载资源。-->
+        <!--语法格式：file:///绝对路径-->
+        <!--不建议：因为移植性差。-->
+        <!--<mapper url="file:///d:/CarMapper.xml"/>-->
+    </mappers>
+</configuration>

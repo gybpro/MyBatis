@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.high.mybatis.mapper.CarMapper">
+
+    <!--开启二级缓存-->
+    <!--<cache/>-->
+    <!--使用集成的第三方缓存EhCache-->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+    <!--定义全部列名的映射-->
+    <sql id="CarColumns">
+        id, car_num, brand, guide_price, produce_time, car_type
+    </sql>
+    <!--书写SQL语句-->
+    <select id="selectById" resultType="car">
+        select
+        <include refid="CarColumns"/>
+        from t_car
+        where id = #{id}
+    </select>
+
+    <insert id="insertCar" parameterType="car">
+        insert into t_car
+        values (null,
+                #{carNum},
+                #{brand},
+                #{guidePrice},
+                #{produceTime},
+                #{carType})
+    </insert>
+
+</mapper>

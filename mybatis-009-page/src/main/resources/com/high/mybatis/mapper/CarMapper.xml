@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.high.mybatis.mapper.CarMapper">
+    <sql id="BaseColumns">
+        id, car_num, brand, guide_price, produce_time, car_type
+    </sql>
+
+    <select id="selectAll" resultType="car">
+        select <include refid="BaseColumns"/>
+        from t_car
+    </select>
+</mapper>
